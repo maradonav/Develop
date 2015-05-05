@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Trang Chủ";
+}
+<h2>
+    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <text> Xin chào <span class="light-color">@User.Identity.Name</span>!
+        </text>
+    }
+    else
+    {
+        <text> Xin chào bạn! Vui lòng <a href="/Account/Login" class="light-color">
+                Đăng Nhập
+            </a> để sử dụng hệ thống.
+        </text>
+    }
+</h2>
+
