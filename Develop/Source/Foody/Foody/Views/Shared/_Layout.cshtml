@@ -1,4 +1,5 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+﻿@using Foody.Models
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -8,25 +9,87 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
+
     <div class="page">
         <div class="header">
             <div class="title">
                 <h1>
-                    My ASP.NET Application
+                    Foody
                 </h1>
             </div>
-            <div class="loginDisplay">
+            @if (User.Identity.IsAuthenticated)
+            {
+                using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="loginDisplay">
+                        @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-link" })|<input type="submit" value="Log Out" class="btn btn-link" />
+                    </div>
+                }
 
-                [ <a href="~/Account/Login" id="HeadLoginView_HeadLoginStatus">Log In</a> ]
-
-            </div>
+            }
+            else
+            {
+                <div class="loginDisplay">
+                    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-link" })|@Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-link" })
+                </div>
+            }
             <div class="clear hideSkiplink">
-                <div class="menu" id="NavigationMenu" style="float: left;">
-                    <ul class="level1 static" tabindex="0" role="menubar" style="position: relative; width: auto; float: left;">
-                        <li role="menuitem" class="static" style="position: relative; float: left;"><a class="level1 static" href="/" tabindex="-1">Home</a></li>
-                        <li role="menuitem" class="static" style="position: relative; float: left;"><a class="level1 selected static" href="~/Home/About" tabindex="-1">About</a></li>
-                    </ul>
-                </div><div style="clear: left;"></div><a id="NavigationMenu_SkipLink"></a>
+                @*@{
+                        int maxLevel = Menu.GetMaxLevelMenu(User.Identity.Name);
+                    }*@
+                @{
+                    <div id="cssmenu">
+                        <ul>
+                            @{
+                                List<Menu> menuLevel0 = Menu.GetMenus(string.Empty, 0, User.Identity.Name);
+
+                                foreach (Menu menuL0 in menuLevel0)
+                                {
+                                    List<Menu> menuLevel1 = Menu.GetMenus(menuL0.MenuId, 1, User.Identity.Name);
+                                    if (menuLevel1.Count > 0)
+                                    {
+                                        <li class="has-sub">
+                                            <a href="@menuL0.GetMenuUrl()">@menuL0.MenuName</a>
+                                            <ul>
+
+                                                @foreach (Menu menuL1 in menuLevel1)
+                                                {
+                                                    List<Menu> menuLevel2 = Menu.GetMenus(menuL1.MenuId, 2, User.Identity.Name);
+                                                    if (menuLevel2.Count > 0)
+                                                    {
+                                                        <li class="has-sub">
+                                                            <a href="@menuL1.GetMenuUrl()">@menuL1.MenuName</a>
+                                                            <ul>
+                                                                @foreach (Menu menuL2 in menuLevel1)
+                                                                {
+                                                                    <li class="has-sub">
+                                                                        <a href="@menuL2.GetMenuUrl()">@menuL2.MenuName</a>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><a href="@menuL1.GetMenuUrl()">@menuL1.MenuName</a></li>
+                                                    }
+
+                                                }
+
+                                            </ul>
+                                        </li>
+
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@menuL0.GetMenuUrl()">@menuL0.MenuName</a></li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
         <div class="main">

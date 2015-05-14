@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Foody.Models.Account>
+
+@{
+    ViewBag.Title = "Account Management";
+}
+
+<h2>Account List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Register", "Account")
+</p>
+<div >
+    <table class="table table-bordered">
+        <tr class="info">
+            <th>
+                User Name
+            </th>
+            <th>
+                Mail
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Last Updated<br />Date Time
+            </th>
+            <th>
+                Last Updated By
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdatedDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdatedBy)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.UserName })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

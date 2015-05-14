@@ -1,41 +1,78 @@
-﻿@model Foody.Models.RegisterViewModel
+﻿@model Foody.Models.RegisterModel
+
 @{
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
+<div id="foodyForm">
+    <h2>Create new local account.</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <p>
+            @Html.ValidationSummary("Error occur during process your request...")
+        </p>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary()
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-}
+        <fieldset>
+            <legend>Registration Form</legend>
+            <table>
+                <tr>
+                    <td class="field-lable">
+                        @Html.LabelFor(m => m.UserName)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.UserName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-lable">
+                        @Html.LabelFor(m => m.Email)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-lable">
+                        @Html.LabelFor(m => m.Password)
+                    </td>
+                    <td>
+                        @Html.PasswordFor(m => m.Password)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.ConfirmPassword)
+                    </td>
+                    <td>
+                        @Html.PasswordFor(m => m.ConfirmPassword)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.DisplayName)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.DisplayName)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Register" />
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        if (String.IsNullOrEmpty( User.Identity.Name))
+        {
+            <p>
+                Already a member? Go and @Html.ActionLink("Log in", "Login").
+            </p>
+        }
 
+    }
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

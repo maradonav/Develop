@@ -1,0 +1,131 @@
+﻿@model PagedList.IPagedList<Foody.Models.Menu>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Menu List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Menu", FormMethod.Get))
+{
+    <p>
+        @*Search By:  <input id="SearchString" name="SearchString" placeholder="Menu Id, Menu Name, Controller Name or Action Name" size="43"  />*@
+        Search By: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @placeholder = "Menu Id, Menu Name, Controller Name or Action Name", @size = "43" })
+        <input type="submit" value="Search" />
+    </p>
+}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr class="info">
+            <th>
+                Menu ID
+            </th>
+            <th>
+                @Html.ActionLink("Menu Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Controller Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Action Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Hierarchy Level", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Ordinal
+            </th>
+            <th>
+                Menu Type
+            </th>
+            <th>
+                Parent<br />Menu Id
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.CreatedDateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdatedDateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdatedBy)
+                </th>*@
+            <th>
+                More...
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ControllerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HierarchyLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ordinal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParentMenuId)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.CreatedDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastUpdatedDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastUpdatedBy)
+                    </td>*@
+                <td width="130px" align="center">
+                    @if ("49891ca5-ddfb-4528-9c81-1e1d2ecc5c2b,634d0a15-f32d-43cb-8399-0006d9c902da,81f75572-ab1f-4bbd-9c05-053c262138da,9f3882b0-f64a-40d5-abdf-b6c663221868,aec8f467-06f5-48ab-9e88-6826c89de590,c8a052f3-b9d8-46ed-8913-3fb727ba0446,f6d7480d-30cd-4e83-bb31-afc3da938758".Contains(item.MenuId))
+                    {
+                        @*@Html.ActionLink("Details", "Details", new { id = item.MenuId })*@
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Edit |", "Edit", new { id = item.MenuId })
+                        @*@Html.ActionLink("Details |", "Details", new { id = item.MenuId })*@
+                        @Html.ActionLink("Delete", "Delete", new { id = item.MenuId })
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    <div>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    </div>
+   
+</div>

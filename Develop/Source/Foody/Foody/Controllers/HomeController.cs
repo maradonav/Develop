@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Foody.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ namespace Foody.Controllers
 {
     public class HomeController : Controller
     {
+        [InitializeSimpleMembershipAttribute]
         public ActionResult Index()
         {
             return View();

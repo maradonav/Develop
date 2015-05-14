@@ -1,0 +1,153 @@
+﻿@model Foody.Models.Menu
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Create New Menu</h2>
+@using (Html.BeginForm())
+{    
+    @Html.AntiForgeryToken()
+    <p>
+        @Html.ValidationSummary("Error occur during process your request...")
+    </p>
+    <fieldset>
+        <legend>Menu</legend>
+        <table>
+            @*<div >
+                    @Html.LabelFor(model => model.MenuId, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MenuId)
+                        @Html.ValidationMessageFor(model => model.MenuId)
+                    </div>
+                </div>*@
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.MenuName)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.MenuName)
+                    @*@Html.ValidationMessageFor(model => model.MenuName)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.ControllerName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.ControllerName)
+                    @*@Html.ValidationMessageFor(model => model.ControllerName)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.ActionName)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.ActionName)
+                    @*@Html.ValidationMessageFor(model => model.ActionName)*@
+                </td>
+            </tr>
+
+            @*<tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.Parameters)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.Parameters)
+                    @Html.ValidationMessageFor(model => model.Parameters)
+                </td>
+            </tr>*@
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.HierarchyLevel)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.HierarchyLevel)
+                    @* @Html.ValidationMessageFor(model => model.HierarchyLevel)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.Ordinal)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.Ordinal)
+                    @* @Html.ValidationMessageFor(model => model.Ordinal)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.MenuType)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.MenuType)
+                    @* @Html.ValidationMessageFor(model => model.MenuType)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    @Html.LabelFor(model => model.ParentMenuId)
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.ParentMenuId)
+                    @*@Html.ValidationMessageFor(model => model.ParentMenuId)*@
+                </td>
+            </tr>
+
+            @*<div >
+                    @Html.LabelFor(model => model.CreatedDateTime, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CreatedDateTime)
+                        @Html.ValidationMessageFor(model => model.CreatedDateTime)
+                    </div>
+                </div>
+
+                <div >
+                    @Html.LabelFor(model => model.LastUpdatedDateTime, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LastUpdatedDateTime)
+                        @Html.ValidationMessageFor(model => model.LastUpdatedDateTime)
+                    </div>
+                </div>
+
+                <div >
+                    @Html.LabelFor(model => model.CreatedBy, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CreatedBy)
+                        @Html.ValidationMessageFor(model => model.CreatedBy)
+                    </div>
+                </div>
+
+                <div >
+                    @Html.LabelFor(model => model.LastUpdatedBy, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LastUpdatedBy)
+                        @Html.ValidationMessageFor(model => model.LastUpdatedBy)
+                    </div>
+                </div>*@
+            <tr>
+                <td></td>
+                <td class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

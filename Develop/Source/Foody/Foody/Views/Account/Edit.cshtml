@@ -1,0 +1,95 @@
+﻿@model Foody.Models.Account
+
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>
+    Edit Account @Html.DisplayFor(modelitem => modelitem.UserName)
+</h2>
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+         {
+             Text = "Active",
+             Value = "A"
+         });
+    listItems.Add(new SelectListItem
+         {
+             Text = "Inactive",
+             Value = "I"
+         });  
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <p>
+        @Html.ValidationSummary("Error occur during process your request...")
+    </p>
+    <fieldset>
+        <legend>Menu</legend>
+        <table>
+            @*<div >
+                    @Html.LabelFor(model => model.MenuId, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MenuId)
+                        @Html.ValidationMessageFor(model => model.MenuId)
+                    </div>
+                </div>*@
+
+            <tr>
+                <td class="field-lable">
+                    Password
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Password)
+                    @*@Html.ValidationMessageFor(model => model.MenuName)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    Full Name
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UserName)
+                    @*@Html.ValidationMessageFor(model => model.ControllerName)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td class="field-lable">
+                    Email
+                </td>
+                <td class="col-md-10">
+                    @Html.EditorFor(model => model.Email)
+                    @*@Html.ValidationMessageFor(model => model.ActionName)*@
+                </td>
+            </tr>
+            <tr>
+                <td class="field-lable">
+                    Status
+                </td>
+                <td class="col-md-10">
+                    @Html.DropDownListFor(model => model.Status, listItems)
+                    @*@Html.ValidationMessageFor(model => model.ActionName)*@
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
