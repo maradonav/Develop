@@ -12,6 +12,7 @@ using Foody.Models;
 using System.Web.Security;
 using System.Data.Entity;
 using System.Net;
+using PagedList;
 
 namespace Foody.Controllers
 {
@@ -21,9 +22,56 @@ namespace Foody.Controllers
         private DatabaseContext db = new DatabaseContext();
 
         // GET: /Account/
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(db.AccountList.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
+            ViewBag.NameSortParm = sortOrder == "DisplayName" ? "displayname_desc" : "DisplayName";
+            ViewBag.NameSortParm = sortOrder == "Email" ? "email_desc" : "Email";
+            //ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+            var account = from m in db.AccountList
+                          select m;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                account = account.Where(s => s.UserName.Contains(searchString) || s.Email.Contains(searchString)
+                                       || s.DisplayName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "username_desc":
+                    account = account.OrderByDescending(s => s.UserName);
+                    break;
+                case "DisplayName":
+                    account = account.OrderBy(s => s.DisplayName);
+                    break;
+                case "displayname_desc":
+                    account = account.OrderByDescending(s => s.DisplayName);
+                    break;
+                case "Email":
+                    account = account.OrderBy(s => s.Email);
+                    break;
+                case "email_desc":
+                    account = account.OrderByDescending(s => s.Email);
+                    break;
+                default:
+                    account = account.OrderBy(s => s.Email);
+                    break;
+            }
+
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            return View(account.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /Account/Edit/
@@ -41,7 +89,7 @@ namespace Foody.Controllers
             return View(account);
         }
 
-        // POST: /Account2/Edit/5
+        // POST: /Account/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -62,6 +110,17 @@ namespace Foody.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            return View(account);
+        }
+        //GET: /Account/Detail/
+        public ActionResult AccountDetails()
+        {
+            Account account = db.AccountList.FirstOrDefault(i => i.UserName == User.Identity.Name);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
             return View(account);
         }
         // GET: /Account/Login
@@ -92,6 +151,7 @@ namespace Foody.Controllers
                     else
                     {
                         FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
                         if (Url.IsLocalUrl(returnUrl))
                         {
                             return Redirect(returnUrl);
@@ -101,15 +161,13 @@ namespace Foody.Controllers
                             return RedirectToAction("Index", "Home");
                         }
                     }
-
                 }
-            }
+                else  // If we got this far, something failed, redisplay form
+                {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
+            }           
 
-            // If we got this far, something failed, redisplay form
-            if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
-            {
-                ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            }
             return View(model);
         }
 
@@ -130,6 +188,8 @@ namespace Foody.Controllers
             account.UserName = register.UserName;
             account.Password = Account.Encrypt(register.Password);
             account.Status = "A";
+            account.Email = register.Email;
+            account.DisplayName = register.DisplayName;
             if (User.Identity.Name != null)
             {
                 account.CreatedBy = User.Identity.Name;

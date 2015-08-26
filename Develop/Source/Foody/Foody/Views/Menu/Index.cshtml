@@ -88,7 +88,7 @@
                     @Html.DisplayFor(modelItem => item.MenuType)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ParentMenuId)
+                    @Html.DisplayFor(modelItem => item.MenuName.Where ())
                 </td>
                 @*<td>
                         @Html.DisplayFor(modelItem => item.CreatedDateTime)
@@ -103,7 +103,7 @@
                         @Html.DisplayFor(modelItem => item.LastUpdatedBy)
                     </td>*@
                 <td width="130px" align="center">
-                    @if ("49891ca5-ddfb-4528-9c81-1e1d2ecc5c2b,634d0a15-f32d-43cb-8399-0006d9c902da,81f75572-ab1f-4bbd-9c05-053c262138da,9f3882b0-f64a-40d5-abdf-b6c663221868,aec8f467-06f5-48ab-9e88-6826c89de590,c8a052f3-b9d8-46ed-8913-3fb727ba0446,f6d7480d-30cd-4e83-bb31-afc3da938758".Contains(item.MenuId))
+                    @if ("b45e7c24-6f41-498a-bc0f-2a159439f76d,f74ee4fb-6550-42dc-9faa-4af75d03d294,384b8543-0a5f-40d3-955e-6cffd82cf10c,a2de9064-9cb8-4beb-b63f-201866a3c13c,89b74368-6ca9-4c73-8f45-6673da9db06d,235c0d27-6c14-437f-9d3b-88430810a21f,6aeec761-62f4-4369-9459-6c5af4c4cbbe".Contains(item.MenuId))
                     {
                         @*@Html.ActionLink("Details", "Details", new { id = item.MenuId })*@
                     }

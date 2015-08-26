@@ -1,5 +1,6 @@
-﻿@model IEnumerable<Foody.Models.Account>
-
+﻿@model PagedList.IPagedList<Foody.Models.Account>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Account Management";
 }
@@ -9,14 +10,25 @@
 <p>
     @Html.ActionLink("Create New", "Register", "Account")
 </p>
-<div >
+@using (Html.BeginForm("Index", "Account", FormMethod.Get))
+{
+    <p>
+        @*Search By:  <input id="SearchString" name="SearchString" placeholder="Menu Id, Menu Name, Controller Name or Action Name" size="43"  />*@
+        Search By: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @placeholder = "User Name, Display Name or Email", @size = "35" })
+        <input type="submit" value="Search" />
+    </p>
+}
+<div>
     <table class="table table-bordered">
         <tr class="info">
             <th>
-                User Name
+                @Html.ActionLink("User Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
-                Mail
+                @Html.ActionLink("Display Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
                 Status
@@ -37,6 +49,9 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
@@ -48,10 +63,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LastUpdatedBy)
                 </td>
-                <td>
+                <td width="130px" align="center">
                     @Html.ActionLink("Edit", "Edit", new { id = item.UserName })
                 </td>
             </tr>
         }
     </table>
+    <br />
+    <div>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    </div>
 </div>
